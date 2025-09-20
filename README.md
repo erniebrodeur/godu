@@ -74,33 +74,6 @@ The output format matches traditional `du`:
 - The root directory total appears last
 - Sizes are displayed in KB by default, or human-readable format with `-h`
 
-## How It Works
-
-`godu` walks the directory tree and calculates disk usage by:
-
-1. **Block-aligned calculation**: File sizes are rounded up to the nearest 4KB block to match actual disk usage
-2. **Accumulative sizing**: Each file's size is added to all parent directories up to the scan root
-3. **Permission handling**: Unreadable directories are silently skipped rather than causing errors
-4. **Depth filtering**: Only directories within the specified depth limit are included in output
-
-## Performance
-
-`godu` is designed to be fast and memory-efficient:
-
-- Single-pass directory traversal
-- Minimal memory allocation
-- Efficient path handling
-- Graceful error recovery
-
-## Compatibility
-
-`godu` aims to be compatible with standard Unix `du` behavior:
-
-- Same output format and ordering
-- Similar size calculations (block-aligned)
-- Comparable command-line interface
-- Cross-platform support
-
 ## Contributing
 
 1. Fork the repository
@@ -112,9 +85,3 @@ The output format matches traditional `du`:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-- Inspired by the classic Unix `du` command
-- Built with Go's excellent `filepath` package
-- Thanks to the Go community for excellent tooling and documentation
