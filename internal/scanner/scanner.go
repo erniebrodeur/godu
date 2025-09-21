@@ -24,16 +24,14 @@ func Scan(dir string, debug, human bool, maxDepth int) error {
 		}
 
 		if !info.IsDir() {
-			// Calculate actual disk usage (block-aligned size)
 			const blockSize = 4096
 			size := info.Size()
-			// Round up to nearest block
 			diskSize := ((size + blockSize - 1) / blockSize) * blockSize
 
 			if debug {
 				fmt.Printf("FILE: %s (%d bytes, %d disk)\n", path, size, diskSize)
 			}
-			// Add disk size to all parent directories
+
 			currentDir := filepath.Dir(path)
 			for {
 				dirSizes[currentDir] += diskSize
@@ -44,8 +42,6 @@ func Scan(dir string, debug, human bool, maxDepth int) error {
 				currentDir = parent
 			}
 		} else {
-			// Directories don't add their own overhead to the count
-			// The space they use is already accounted for in the file system
 			if debug {
 				fmt.Printf("DIR: %s\n", path)
 			}
@@ -58,7 +54,6 @@ func Scan(dir string, debug, human bool, maxDepth int) error {
 		return err
 	}
 
-	// Create list of directories to show based on depth
 	var dirsToShow []string
 	for dirPath := range dirSizes {
 		relPath, _ := filepath.Rel(dir, dirPath)
@@ -67,15 +62,12 @@ func Scan(dir string, debug, human bool, maxDepth int) error {
 			depth = strings.Count(relPath, string(os.PathSeparator)) + 1
 		}
 
-		// Include this directory if within depth limit
 		if maxDepth < 0 || depth <= maxDepth {
 			dirsToShow = append(dirsToShow, dirPath)
 		}
 	}
 
-	// Sort directories, but put the root directory last like du does
 	sort.Slice(dirsToShow, func(i, j int) bool {
-		// Root directory (.) should come last
 		if dirsToShow[i] == dir {
 			return false
 		}
@@ -85,10 +77,8 @@ func Scan(dir string, debug, human bool, maxDepth int) error {
 		return dirsToShow[i] < dirsToShow[j]
 	})
 
-	// Print directory sizes
 	for _, dirPath := range dirsToShow {
 		size := dirSizes[dirPath]
-		// Format path like du does (with ./ prefix for relative paths)
 		displayPath := dirPath
 		if relPath, err := filepath.Rel(dir, dirPath); err == nil {
 			if relPath == "." {
