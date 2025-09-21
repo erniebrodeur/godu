@@ -1,87 +1,60 @@
 # godu
 
-A fast, modern disk usage analyzer written in Go that mimics the behavior of the traditional Unix `du` command.
+[![Go Report Card](https://goreportcard.com/badge/github.com/erniebrodeur/godu)](https://goreportcard.com/report/github.com/erniebrodeur/godu)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
-
-- **Fast directory scanning** with concurrent file processing
-- **Human-readable output** with `-h/--human` flag (B, K, M, G, T, P, E)
-- **Depth limiting** with `-d/--depth` to control how deep to scan
-- **Verbose debugging** with `-v/--verbose` to see detailed scan progress
-- **Cross-platform** support (Linux, macOS, Windows)
-- **Memory efficient** for large directory trees
-- **Permission-aware** - gracefully handles unreadable directories
+Fast disk usage analyzer for Go. A modern replacement for `du` with concurrent scanning and cross-platform support.
 
 ## Installation
-
-### From Source
 
 ```bash
 go install github.com/erniebrodeur/godu/cmd/godu@latest
 ```
 
-### Clone and Build
+Or build from source:
 
 ```bash
 git clone https://github.com/erniebrodeur/godu.git
-cd godu
-go build -o godu cmd/godu/main.go
+cd godu && go build ./cmd/godu
 ```
 
 ## Usage
 
 ```bash
-godu [OPTIONS] [DIRECTORY]
+godu [flags] [directory]
 ```
 
-### Options
+**Flags:**
+- `-h, --human` - Human readable sizes (1.2K, 3.4M)  
+- `-d, --depth N` - Limit depth to N levels
+- `-v, --verbose` - Debug output
+- `--version` - Show version
 
-- `-h, --human`: Display sizes in human readable format (e.g., 1.2K, 3.4M)
-- `-d, --depth N`: Limit output to directories at most N levels deep
-- `-v, --verbose`: Enable verbose output showing all files and directories being processed
-
-### Examples
+**Examples:**
 
 ```bash
-# Scan current directory
-godu
-
-# Scan specific directory with human-readable sizes
-godu -h /var/log
-
-# Limit depth to 2 levels
-godu -d 2 ~/Projects
-
-# Verbose output for debugging
-godu -v -h /tmp
-
-# Combine flags
-godu --depth 1 --human --verbose /usr/local
+godu                    # current directory  
+godu /var/log           # specific path
+godu -h -d 2 ~/src      # human readable, max 2 levels deep
 ```
 
-## Output Format
+## Output
 
-The output format matches traditional `du`:
+Matches traditional `du` format:
 
 ```
 4.0K    ./cmd
-4.0K    ./internal
-124K    ./.git
+8.0K    ./internal  
 136K    .
 ```
 
-- Subdirectories are listed first in alphabetical order
-- The root directory total appears last
-- Sizes are displayed in KB by default, or human-readable format with `-h`
+## Performance
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -am 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- Concurrent file processing
+- Block-aligned size calculation (4KB blocks)
+- Memory efficient for large trees
+- Graceful permission error handling
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT
