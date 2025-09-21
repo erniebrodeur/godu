@@ -27,6 +27,7 @@ godu [flags] [directory]
 **Flags:**
 - `-h, --human` - Human readable sizes (1.2K, 3.4M)  
 - `-d, --depth N` - Limit depth to N levels
+- `-t, --type` - Group by file type instead of directories
 - `-v, --verbose` - Debug output
 - `--version` - Show version
 
@@ -36,6 +37,8 @@ godu [flags] [directory]
 godu                    # current directory  
 godu /var/log           # specific path
 godu -h -d 2 ~/src      # human readable, max 2 levels deep
+godu -t                 # group by file type
+godu -t -h ~/Downloads  # file types with human readable sizes
 ```
 
 ## Output

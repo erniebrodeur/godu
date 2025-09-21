@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-const Version = "0.1.0"
-
 type Config struct {
 	Directory   string
 	Verbose     bool
@@ -17,7 +15,7 @@ type Config struct {
 	ShowVersion bool
 }
 
-func ParseArgs() *Config {
+func ParseArgs(version string) *Config {
 	config := &Config{}
 
 	flag.Usage = func() {
@@ -47,7 +45,7 @@ func ParseArgs() *Config {
 	flag.Parse()
 
 	if config.ShowVersion {
-		fmt.Printf("godu %s\n", Version)
+		fmt.Printf("godu %s\n", version)
 		os.Exit(0)
 	}
 

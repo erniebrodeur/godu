@@ -8,8 +8,10 @@ import (
 	"github.com/erniebrodeur/godu/internal/scanner"
 )
 
+const Version = "0.2.0"
+
 func main() {
-	config := cli.ParseArgs()
+	config := cli.ParseArgs(Version)
 
 	if err := config.Validate(); err != nil {
 		log.Fatal(err)
